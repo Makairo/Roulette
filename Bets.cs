@@ -13,6 +13,9 @@ namespace Roulette
             string output = "";
             Console.WriteLine("Please enter the type of bet you would like to make. Type \"HELP\" for assistance.");
             output = Console.ReadLine();
+
+            //Checks for EXIT and HELP cases specifically.
+            //Then checks length
             if (output.ToUpper() == "EXIT")
             {
                 return "EXIT";
@@ -33,7 +36,7 @@ namespace Roulette
         public static int GetUserBinNumber()
         {
             int output = 0;
-            Console.WriteLine("Please enter the number of the bin.");
+            Console.WriteLine("Please enter the number of the bin:");
             output = Int32.Parse(Console.ReadLine());
 
             if (output > 36 || output < 0)
@@ -111,7 +114,8 @@ namespace Roulette
             bool won = true;
             bool keepGoing = true;
             
-            
+            // Infinite loop for 2nd level input validation.
+            // Will continue to here again if "default" case is hit.
             for (; ; )
             {
                 switch (bet)
@@ -181,7 +185,7 @@ namespace Roulette
             while (ooe.ToUpper() != "O" && ooe.ToUpper() != "E") 
             {
                 Console.WriteLine("Odd or Even? ('O' or 'E')");
-                ooe = Console.ReadLine();
+                ooe = Console.ReadLine().ToUpper();
             }
             if (ooe == "O") bet = 1;
             Tuple<int, string> Wheel = SpinWheel();
@@ -205,10 +209,10 @@ namespace Roulette
         {
             string rob = "";
             string bet = "";
-            while (rob.ToUpper() != "R" && rob.ToUpper() != "B")
+            while (rob != "R" && rob != "B")
             {
                 Console.WriteLine("Red or Black? ('R' or 'B')");
-                rob = Console.ReadLine();
+                rob = Console.ReadLine().ToUpper();
             }
             if (rob == "B") bet = "black";
             if (rob == "R") bet = "red";
@@ -310,11 +314,11 @@ namespace Roulette
         //Columns Bet
         public static bool ColumnsBet()
         {
-            int column = 5;
+            int column = 0;
             int resultCol = 0;
             
             Console.WriteLine("Choose a column: 1, 2 or 3");
-            while (column != 1 && column != 2 && column != 0)
+            while (column != 1 && column != 2 && column != 3)
             {
                 column = GetUserInt("column");
             }
@@ -508,10 +512,16 @@ namespace Roulette
             Tuple<int, string> binA = Board[0];
             Tuple<int, string> binB = Board[0];
 
+            Console.WriteLine("Please enter a split for your bet: (Two contiguous bins) ");
+            binA = GetUserBin();
+            binB = GetUserBin();
+            //Checks if they are next to each other.
+            contiguous = AreBinsContiguous(binA, binB);
+
             // While not next to one another:
             while (contiguous == false)
             {
-                Console.WriteLine("Please enter a split for your bet: (Two contiguous bins) ");
+                Console.WriteLine("Bins are not contiguous. Please enter a split for your bet: (Two contiguous bins) ");
                 binA = GetUserBin();
                 binB = GetUserBin();
                 //Checks if they are next to each other.
@@ -540,7 +550,7 @@ namespace Roulette
             return result;
         }
 
-        //Returns a boolean wether or not the two bins are part of the same CORNER. Is smart in scanning, only ment for a 3 width grid like this.
+        //Returns a boolean wether or not the two bins are part of the same CORNER. Is smart in scanning, only meant for a 3 width grid like this.
         public static bool IsCorner(Tuple<int, string> binA, Tuple<int, string> binB)
         {
             // Grabs the num values from the bins
@@ -655,8 +665,35 @@ namespace Roulette
             Tuple<int, string> binC = Board[0];
             Tuple<int, string> binD = Board[0];
 
+            // Grab initial bin. The corner bet will be based off this value.
+            // User will select TOP LEFT value of the corner.
+            binA = GetUserBin();
+
+
+            //Make sure its a valid starting square, so column 1 or 2.
+            while (binA.Item1 % 3 == 0)
+            {
+                Console.WriteLine($"Bin {binA.Item1} {binB.Item2} is not a valid starting square for your corner bet.");
+                binA = GetUserBin();
+            }
+
+
+            // Values are stored in array 1 higher than index.. simple math instead of calling another method.
+            // If I was to optimize for errors, this would go first.
+            int sIndex = binA.Item1 - 1;
+
+            //Based on binA, assign the other 4 corners for easy win check.
+            binB = Board[sIndex + 1];
+            binC = Board[sIndex + 3];
+            binD = Board[sIndex + 4];
+
+            // Show player their corner.
+
+            Console.WriteLine($"You have selected Corner {binA.Item1} / {binB.Item1} / {binC.Item1} / {binD.Item1}.");
+
+
             // While not next to one another:
-            while (cornerBet == false)
+            /*while (cornerBet == false)
             {
                 Console.WriteLine("Select two splits to form your corner bet.");
                 while (contiguousA == false)
@@ -680,7 +717,9 @@ namespace Roulette
                 {
                     cornerBet = true;
                 }
+            
             }
+            */
             Tuple<int, string> Wheel = SpinWheel();
             Console.WriteLine($"The wheel landed on {Wheel.Item1} {Wheel.Item2}.\nThe winning bets are Corners:");
             for (int i = 0; i < Board.Length - 5;)
