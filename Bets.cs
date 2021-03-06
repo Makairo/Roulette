@@ -667,11 +667,12 @@ namespace Roulette
 
             // Grab initial bin. The corner bet will be based off this value.
             // User will select TOP LEFT value of the corner.
+            Console.WriteLine("Select the starting square for your bet. (EX 1 for Corner 1 / 2 / 4 / 5)");
             binA = GetUserBin();
 
 
             //Make sure its a valid starting square, so column 1 or 2.
-            while (binA.Item1 % 3 == 0)
+            while (binA.Item1 % 3 == 0 || binA.Item1 > 32)
             {
                 Console.WriteLine($"Bin {binA.Item1} {binB.Item2} is not a valid starting square for your corner bet.");
                 binA = GetUserBin();
