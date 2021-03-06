@@ -653,9 +653,6 @@ namespace Roulette
         public static bool CornerBet()
         {
             // Bool for input values are next to one another
-            bool contiguousA = false;
-            bool contiguousB = false;
-            bool cornerBet = false;
             // Bool for result
             bool result = false;
 
@@ -692,35 +689,6 @@ namespace Roulette
 
             Console.WriteLine($"You have selected Corner {binA.Item1} / {binB.Item1} / {binC.Item1} / {binD.Item1}.");
 
-
-            // While not next to one another:
-            /*while (cornerBet == false)
-            {
-                Console.WriteLine("Select two splits to form your corner bet.");
-                while (contiguousA == false)
-                {
-                    Console.WriteLine("Please enter the first split for your bet: (Two contiguous bins) ");
-                    binA = GetUserBin();
-                    binB = GetUserBin();
-                    //Checks if they are next to each other.
-                    contiguousA = AreBinsContiguous(binA, binB);
-                }
-                while (contiguousB == false)
-                {
-                    Console.WriteLine("Please enter the second split for your bet: (Two contiguous bins) ");
-                    binC = GetUserBin();
-                    binD = GetUserBin();
-                    //Checks if they are next to each other.
-                    contiguousB = AreBinsContiguous(binC, binD);
-                }
-                // Checks if first set is next to second set.
-                if(AreBinsContiguous(binA, binC) == true && AreBinsContiguous(binB, binD) == true)
-                {
-                    cornerBet = true;
-                }
-            
-            }
-            */
             Tuple<int, string> Wheel = SpinWheel();
             Console.WriteLine($"The wheel landed on {Wheel.Item1} {Wheel.Item2}.\nThe winning bets are Corners:");
             for (int i = 0; i < Board.Length - 5;)
