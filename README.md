@@ -1,4 +1,4 @@
-# 🎰 Roulette
+# Roulette
 
 A simple **roulette game implementation in C#**, created as a practice project to reinforce programming fundamentals, randomness, and control flow.
 
@@ -6,7 +6,7 @@ This repository contains a basic simulation of a roulette wheel and betting logi
 
 ---
 
-## 🧠 Purpose
+## Purpose
 
 This project was developed to:
 
@@ -17,7 +17,7 @@ This project was developed to:
 
 ---
 
-## 🎯 Features
+## Features
 
 ✔ Random number generation for wheel spins  
 ✔ Bet types and payout logic  
